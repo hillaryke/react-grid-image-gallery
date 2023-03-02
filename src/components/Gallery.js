@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './gallery.css';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Gallery = () => {
    let data = [
@@ -78,16 +79,29 @@ const Gallery = () => {
 
    ];
 
+   const [model, setModel] = useState(false);
+   const [tempImgSrc, setTempImgSrc] = useState('');
+   const getImg = (imgSrc) => {
+      setTempImgSrc(imgSrc);
+      setModel(true);
+   };
 
    return (
-       <div className="gallery">
-          {data.map((item, index) => {
-             return (
-                 <div className="pics" key={index}>
-                    <img src={item.imgSrc} style={{ width: '100%'}} alt="img"/>
-                 </div>
-          )})}
-       </div>
+       <>
+          <div className={model ? 'model open' : 'model'}>
+             <img src={tempImgSrc} alt="img" />
+             <CloseIcon onClick={() => setModel(false)} />
+          </div>
+          <div className="gallery">
+             {data.map((item, index) => {
+                return (
+                    <div className="pics" key={index} onClick={() => getImg(item.imgSrc)}>
+                       <img src={item.imgSrc} style={{ width: '100%' }} alt="img"/>
+                    </div>
+                );
+             })}
+          </div>
+       </>
    );
 };
 
